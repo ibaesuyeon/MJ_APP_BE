@@ -8,7 +8,7 @@ public class MjAppBeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MjAppBeApplication.class, args);
-		System.out.println("Hello World!");
+
 	}
 
 }
