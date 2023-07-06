@@ -18,8 +18,9 @@ public class MyCourse {
     @Column(nullable = false)
     private int year;
 
-    @Column(nullable = false)    // enum 타입?
-    private String semester;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Semester semester;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "my_course_course_id")
