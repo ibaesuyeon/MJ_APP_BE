@@ -1,6 +1,5 @@
-package com.example.MJ_App_BE.notice.domain;
+package com.example.MJ_App_BE.domain;
 
-import com.example.MJ_App_BE.univ.Univ;
 import jakarta.persistence.*;
 import lombok.Getter;
 

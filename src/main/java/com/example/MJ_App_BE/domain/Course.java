@@ -1,8 +1,5 @@
-package com.example.MJ_App_BE.course.domain;
+package com.example.MJ_App_BE.domain;
 
-import com.example.MJ_App_BE.college.College;
-import com.example.MJ_App_BE.major.Major;
-import com.example.MJ_App_BE.mycourse.domain.MyCourse;
 import jakarta.persistence.*;
 import lombok.Getter;
 

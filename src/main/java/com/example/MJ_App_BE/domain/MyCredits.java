@@ -1,6 +1,5 @@
-package com.example.MJ_App_BE.mycredits.domain;
+package com.example.MJ_App_BE.domain;
 
-import com.example.MJ_App_BE.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

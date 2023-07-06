@@ -1,6 +1,5 @@
-package com.example.MJ_App_BE.menu.domain;
+package com.example.MJ_App_BE.domain;
 
-import com.example.MJ_App_BE.campus.Campus;
 import jakarta.persistence.*;
 import lombok.Getter;
 

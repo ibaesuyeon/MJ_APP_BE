@@ -1,11 +1,5 @@
-package com.example.MJ_App_BE.user.domain;
+package com.example.MJ_App_BE.domain;
 
-import com.example.MJ_App_BE.campus.Campus;
-import com.example.MJ_App_BE.college.College;
-import com.example.MJ_App_BE.major.Major;
-import com.example.MJ_App_BE.mycourse.domain.MyCourse;
-import com.example.MJ_App_BE.mycredits.domain.MyCredits;
-import com.example.MJ_App_BE.univ.Univ;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

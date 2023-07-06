@@ -1,6 +1,5 @@
-package com.example.MJ_App_BE.cnotice.domain;
+package com.example.MJ_App_BE.domain;
 
-import com.example.MJ_App_BE.college.College;
 import jakarta.persistence.*;
 import lombok.Getter;
 
