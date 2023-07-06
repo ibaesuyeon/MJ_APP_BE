@@ -9,7 +9,7 @@ public class Map {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long mapId;
 
     @Column(nullable = false)
     private String building;

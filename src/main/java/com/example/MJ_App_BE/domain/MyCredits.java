@@ -9,7 +9,7 @@ public class MyCredits {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long myCreditsId;
 
     @Column(nullable = false)
     private int myTotalCredits;

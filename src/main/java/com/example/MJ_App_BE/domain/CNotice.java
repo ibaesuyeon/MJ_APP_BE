@@ -12,7 +12,7 @@ public class CNotice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long cNoticeId;
 
     @Column(nullable = false, unique = true)
     private int cNoticeNo;

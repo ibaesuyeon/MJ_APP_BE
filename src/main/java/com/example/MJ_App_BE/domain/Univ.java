@@ -12,7 +12,7 @@ public class Univ {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long univId;
 
     @Column(nullable = false, unique = true)
     private String univName;

@@ -12,7 +12,7 @@ public class Campus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long campusId;
 
     @Column(nullable = false)
     private String campusName;
