@@ -1,4 +1,4 @@
-package com.example.MJ_App_BE.domain;
+package com.example.MJ_App_BE.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,17 +23,10 @@ public class Notice {
     private String title;
 
     @Column(nullable = false)
-    private String author;
+    private String pubDate;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date creationDate;
-
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date revisionDate;
-
-    private String contents;
+    private String link;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "notice_univ_id")

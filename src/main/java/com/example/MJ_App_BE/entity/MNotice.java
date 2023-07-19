@@ -1,4 +1,4 @@
-package com.example.MJ_App_BE.domain;
+package com.example.MJ_App_BE.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class MNotice {
     private Long mNoticeId;
 
     @Column(nullable = false, unique = true)
-    private int mNoticeNo;
+    private int mNum;
 
     @Column(nullable = false)
     private String mCategory;
@@ -24,17 +24,10 @@ public class MNotice {
     private String mTitle;
 
     @Column(nullable = false)
-    private String mAuthor;
+    private String mPubDate;
 
-    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date mCreationDate;
-
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date mRevisionDate;
-
-    private String mContents;
+    private String mLink;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "m_notice_univ_id")
