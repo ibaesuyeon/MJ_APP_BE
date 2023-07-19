@@ -1,4 +1,4 @@
-package com.example.MJ_App_BE.domain;
+package com.example.MJ_App_BE.entity;
 
 import lombok.Getter;
 
