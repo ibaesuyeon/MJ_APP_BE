@@ -14,7 +14,7 @@ public class Notice {
     private Long noticeId;
 
     @Column(nullable = false, unique = true)
-    private int noticeNo;
+    private int num;
 
     @Column(nullable = false)
     private String category;
