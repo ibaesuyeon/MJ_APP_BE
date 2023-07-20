@@ -1,35 +1,32 @@
-package com.example.MJ_App_BE.entity;
+package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.Date;
-
 @Getter
 @Entity
-@Table(name = "c_notice")
-public class CNotice {
+public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cNoticeId;
+    private Long noticeId;
 
     @Column(nullable = false, unique = true)
-    private int cNum;
+    private int num;
 
     @Column(nullable = false)
-    private String cCategory;
+    private String category;
 
     @Column(nullable = false)
-    private String cTitle;
+    private String title;
 
     @Column(nullable = false)
-    private String cPubDate;
+    private String pubDate;
 
     @Column(nullable = false)
-    private String cLink;
+    private String link;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "c_notice_college_id")
-    private College college;
+    @JoinColumn(name = "notice_univ_id")
+    private Univ univ;
 }

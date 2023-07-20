@@ -1,4 +1,4 @@
-package com.example.MJ_App_BE.entity;
+package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,12 +32,16 @@ public class MyCredits {
     @Column(nullable = false)
     private int myFreeCredits;
 
+    @Column(nullable = false)
     private int myMinorCredits;
 
+    @Column(nullable = false)
     private int myDoubleMajorCredits;
 
+    @Column(nullable = false)
     private int myLinkedMajorCredits;
 
+    @Column(nullable = false)
     private int myTeachingCredits;
 
     @Column(nullable = false)

@@ -1,4 +1,4 @@
-package com.example.MJ_App_BE.entity;
+package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
