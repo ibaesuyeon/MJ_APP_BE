@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Getter@Setter
 public class ChangeUserYearDto {
-    private int userId;
+    private Long userId;
     private int year;
 
 
-    public ChangeUserYearDto(int userId, int year){
+    public ChangeUserYearDto(Long userId, int year){
         this.userId = userId;
         this.year = year;
     }

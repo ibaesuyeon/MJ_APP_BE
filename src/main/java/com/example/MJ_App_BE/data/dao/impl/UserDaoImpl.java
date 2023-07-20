@@ -32,13 +32,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User selectUser(int id) {
+    public User selectUser(Long id) {
         User selectedUser = userRepository.getReferenceById(id);
         return selectedUser;
     }
 
     @Override
-    public User updateUserYear(int id, int year) throws UserException {
+    public User selectUserDevice(String deviceId) {
+        User selectedUser = userRepository.findByDeviceId(deviceId);
+        return selectedUser;
+    }
+
+    @Override
+    public User updateUserYear(Long id, int year) throws UserException {
         User selectedUser = Optional.of(userRepository.getReferenceById(id))
                 .orElseThrow(()-> new UserException(USER_NOT_FOUND));
 
@@ -50,7 +56,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public User updateUser(Long id, int year, int userCampusId, int userCollegeId, int userMajorId, int userUnivId) throws UserException {
+        User selectedUser = Optional.of(userRepository.getReferenceById(id))
+                .orElseThrow(()-> new UserException(USER_NOT_FOUND));
+
+        User updatedUser;
+        User user = selectedUser;
+        user.setYear(year);
+        user.setUserCampusId(userCampusId);
+        user.setUserCollegeId(userCollegeId);
+        user.setUserMajorId(userMajorId);
+        user.setUserUnivId(userUnivId);
+        updatedUser = userRepository.save(user);
+
+        return updatedUser;
+    }
+
+    @Override
+    public void deleteUser(Long id) {
         Optional<User> selectedUser = Optional.ofNullable(userRepository.findById(id)
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND)));
 

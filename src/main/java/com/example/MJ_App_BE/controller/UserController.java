@@ -1,20 +1,17 @@
 package com.example.MJ_App_BE.controller;
 
 
+import com.example.MJ_App_BE.Result.CommonResult;
+import com.example.MJ_App_BE.Result.ResponseService;
+import com.example.MJ_App_BE.data.dto.userdto.ChangeUserDto;
 import com.example.MJ_App_BE.data.dto.userdto.ChangeUserYearDto;
 import com.example.MJ_App_BE.data.dto.userdto.UserDto;
 import com.example.MJ_App_BE.data.dto.userdto.UserResponseDto;
 import com.example.MJ_App_BE.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Tag(name = "user", description = "user api입니다.")
 
 @RequestMapping("/user")
 @CrossOrigin(origins = "*")
@@ -22,49 +19,60 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final ResponseService responseService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ResponseService responseService) {
         this.userService = userService;
+        this.responseService = responseService;
     }
 
+    //user id로 가져오기
     @GetMapping(value = "/user/{id}")
-    @Operation(summary = "기기정보 조회 메서드", description = "기기정보 조회 메서드입니다.")
-    public ResponseEntity<UserResponseDto> getTest(
-            @Parameter @PathVariable int id) {
-        UserResponseDto userResponseDto = userService.getUser(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
+    public CommonResult getTest(@PathVariable Long id) {
+        UserResponseDto userOne = userService.getUser(id);
+        CommonResult commonResult = responseService.getSingleResult(userOne);
+        return commonResult;
     }
 
+    //user device id로 가져오기
+    @GetMapping(value = "/user/device/{deviceId}")
+    public CommonResult getUser(@PathVariable String deviceId) {
+        UserResponseDto userOne = userService.getUserDevice(deviceId);
+        CommonResult commonResult = responseService.getSingleResult(userOne);
+        return commonResult;
+    }
+
+    //user 등록하기
     @PostMapping(value = "/user/register")
-    @Operation(summary = "기기정보 등록 메서드", description = "기기정보 등록 메서드입니다.")
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserDto userDto) {
-        UserResponseDto userResponseDto = userService.saveUser(userDto);
+    public CommonResult createUser(@RequestBody UserDto userDto) {
+        userService.saveUser(userDto);
 
-        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
+        return responseService.getSuccessfulResult();
     }
 
-    @PutMapping(value = "/user/modifyYear")
-    @Operation(summary = "기기정보 수정 메서드", description = "기기정보 수정 메서드입니다.")
-    public ResponseEntity<UserResponseDto> changeUserYear(
-            @RequestBody ChangeUserYearDto changeUserYearDto) throws Exception{
-        UserResponseDto userResponseDto = userService.changeUserYear(
-                changeUserYearDto.getUserId(),
-                changeUserYearDto.getYear()
-        );
+    //user 학년 수정하기
+    @PutMapping(value = "/user/modifyYear/{id}")
+    public CommonResult changeUserYear(
+            @PathVariable Long id, @RequestBody ChangeUserYearDto changeUserYearDto) throws Exception{
+        userService.changeUserYear(id, changeUserYearDto.getYear());
 
-        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
+        return responseService.getSuccessfulResult();
     }
 
+    //user 정보 수정하기
+    @PutMapping(value = "/user/modify/{id}")
+    public CommonResult changeUser(
+            @PathVariable Long id, @RequestBody ChangeUserDto changeUserDto) throws Exception{
+        userService.changeUser(id, changeUserDto.getYear(), changeUserDto.getUserCampusId(), changeUserDto.getUserCollegeId(), changeUserDto.getUserMajorId(), changeUserDto.getUserUnivId());
+
+        return responseService.getSuccessfulResult();
+    }
+
+    //user 삭제하기
     @DeleteMapping(value = "/user/deletion/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    @Operation(summary = "회원 정보 삭제 메서드", description = "회원정보 삭제 메서드입니다.")
-    public ResponseEntity<String> deleteUser(
-            @Parameter @PathVariable
-            int id) throws Exception{
+    public CommonResult deleteUser(@PathVariable Long id) throws Exception{
         userService.deleteUser(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body("DELETE SUCCESSFULLY :)");
+        return responseService.getSuccessfulResult();
     }
 }
