@@ -1,17 +1,18 @@
 package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor @EqualsAndHashCode
+@Table(name = "user")
+@ToString
 public class User {
 
     @Id
