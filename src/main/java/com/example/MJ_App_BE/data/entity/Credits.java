@@ -1,10 +1,14 @@
 package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
 @Entity
+@NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
+@Table(name = "credits")
+@ToString
 public class Credits {
 
     @Id

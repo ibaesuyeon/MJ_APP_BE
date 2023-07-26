@@ -22,4 +22,7 @@ public class CreditsService {
         Credits credits = creditsRepository.findByMajorMajorId(majorId);
         return new CreditsDto(credits);
     }
+
+    CreditsResponseDto getCredits(Long creditsMajorId);
+
 }

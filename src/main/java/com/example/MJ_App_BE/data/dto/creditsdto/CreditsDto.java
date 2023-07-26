@@ -1,8 +1,13 @@
 package com.example.MJ_App_BE.data.dto.creditsdto;
 
 import com.example.MJ_App_BE.data.entity.Credits;
-import lombok.Getter;
+import lombok.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Builder
 @Getter
 public class CreditsDto {
 
