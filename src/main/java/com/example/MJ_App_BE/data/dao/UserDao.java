@@ -10,6 +10,6 @@ public interface UserDao {
     User selectUserDevice(String deviceId);
     User updateUserYear(Long id, int year) throws UserException;
 
-    User updateUser(Long id, int year, int userCampusId, int userCollegeId, int userMajorId, int userUnivId) throws UserException;
+    User updateUser(Long id, int year, Long userCampusId, Long userCollegeId, Long userMajorId, Long userUnivId) throws UserException;
     void deleteUser(Long id) throws UserException;
 }

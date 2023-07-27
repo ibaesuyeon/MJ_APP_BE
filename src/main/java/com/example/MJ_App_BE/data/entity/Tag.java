@@ -15,6 +15,6 @@ public class Tag {
     private Long tagId;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Tname tname;
+    private String tname;
+
 }

@@ -1,11 +1,8 @@
 package com.example.MJ_App_BE.data.dao.impl;
 
-import com.example.MJ_App_BE.data.dao.TestDao;
 import com.example.MJ_App_BE.data.dao.UserDao;
-import com.example.MJ_App_BE.data.entity.Test;
-import com.example.MJ_App_BE.data.entity.User;
-import com.example.MJ_App_BE.data.repository.TestRepository;
-import com.example.MJ_App_BE.data.repository.UserRepository;
+import com.example.MJ_App_BE.data.entity.*;
+import com.example.MJ_App_BE.data.repository.*;
 import com.example.MJ_App_BE.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,10 +15,19 @@ import static com.example.MJ_App_BE.exception.ErrorCode.USER_NOT_FOUND;
 public class UserDaoImpl implements UserDao {
 
     private final UserRepository userRepository;
+    private final CampusRepository campusRepository;
+    private final CollegeRepository collegeRepository;
+    private final MajorRepository majorRepository;
+    private final UnivRepository univRepository;
 
     @Autowired
-    public UserDaoImpl(UserRepository userRepository) {
+    public UserDaoImpl(UserRepository userRepository, CampusRepository campusRepository, CollegeRepository collegeRepository,
+                       MajorRepository majorRepository, UnivRepository univRepository) {
         this.userRepository = userRepository;
+        this.campusRepository = campusRepository;
+        this.collegeRepository = collegeRepository;
+        this.majorRepository = majorRepository;
+        this.univRepository = univRepository;
     }
 
 
@@ -56,17 +62,35 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User updateUser(Long id, int year, int userCampusId, int userCollegeId, int userMajorId, int userUnivId) throws UserException {
+    public User updateUser(Long id, int year, Long userCampusId, Long userCollegeId, Long userMajorId, Long userUnivId) throws UserException {
         User selectedUser = Optional.of(userRepository.getReferenceById(id))
                 .orElseThrow(()-> new UserException(USER_NOT_FOUND));
 
         User updatedUser;
         User user = selectedUser;
         user.setYear(year);
-        user.setUserCampusId(userCampusId);
-        user.setUserCollegeId(userCollegeId);
-        user.setUserMajorId(userMajorId);
-        user.setUserUnivId(userUnivId);
+
+        Campus campus = campusRepository.findById(userCampusId)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        user.setCampus(campus);
+
+        College college = collegeRepository.findById(userCollegeId)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        user.setCollege(college);
+
+        Major major = majorRepository.findById(userMajorId)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        user.setMajor(major);
+
+        Univ univ = univRepository.findById(userUnivId)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+        user.setUniv(univ);
+
+        // user.setUserCampusId(userCampusId);
+        // user.setUserCollegeId(userCollegeId);
+        // user.setUserMajorId(userMajorId);
+        // user.setUserUnivId(userUnivId);
+
         updatedUser = userRepository.save(user);
 
         return updatedUser;

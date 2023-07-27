@@ -8,17 +8,17 @@ public class ChangeUserDto {
     private Long userId;
     private int year;
 
-    private int userCampusId;
+    private Long userCampusId;
 
-    private int userCollegeId;
+    private Long userCollegeId;
 
-    private int userMajorId;
+    private Long userMajorId;
 
-    private int userUnivId;
+    private Long userUnivId;
 
 
 
-    public ChangeUserDto(Long userId, int year, int userCampusId, int userCollegeId, int userMajorId, int userUnivId){
+    public ChangeUserDto(Long userId, int year, Long userCampusId, Long userCollegeId, Long userMajorId, Long userUnivId){
         this.userId = userId;
         this.year = year;
         this.userCampusId = userCampusId;

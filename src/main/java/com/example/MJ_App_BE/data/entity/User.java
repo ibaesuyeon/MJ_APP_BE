@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor @EqualsAndHashCode
+@NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode
 @Table(name = "user")
 @ToString
 public class User {
@@ -46,6 +46,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MyCourse> myCourseList = new ArrayList<>();
+
+    // @ManyToMany
+    // private List<Tag> tagList = new ArrayList<>();
 
     @Builder
     public User(String deviceId, int year, Univ univ, Campus campus, College college, Major major) {

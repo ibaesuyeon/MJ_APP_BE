@@ -9,7 +9,7 @@ public interface CreditsRepository extends JpaRepository<Credits, Long> {
 
     Credits findByMajorMajorId(Long majorId);
 
-    @Query("SELECT u FROM Credits u WHERE u.creditsMajorId = :creditsMajorId")
-    Credits findByCreditsMajorId(@Param("creditsMajorId") Long creditsMajorId);
+    // @Query("SELECT u FROM Credits u WHERE u.creditsMajorId = :creditsMajorId")
+    // Credits findByCreditsMajorId(Long creditsMajorId);
 
 }

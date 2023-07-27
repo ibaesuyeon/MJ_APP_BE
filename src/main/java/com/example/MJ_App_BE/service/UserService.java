@@ -14,6 +14,6 @@ public interface UserService {
 
     UserResponseDto changeUserYear(Long userId, int year) throws Exception;
 
-    UserResponseDto changeUser(Long userId, int year, int userCampusId, int userCollegeId, int userMajorId, int userUnivId) throws Exception;
+    UserResponseDto changeUser(Long userId, int year, Long userCampusId, Long userCollegeId, Long userMajorId, Long userUnivId) throws Exception;
     void deleteUser(Long userId) throws Exception;
 }

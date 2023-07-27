@@ -20,7 +20,7 @@ public class CreditsDaoImpl implements CreditsDao {
 
     @Override
     public Credits getCredits(Long creditsMajorId) {
-        Credits selectedCredits = creditsRepository.findByCreditsMajorId(creditsMajorId);
+        Credits selectedCredits = creditsRepository.findByMajorMajorId(creditsMajorId);
         return selectedCredits;
     }
 }
