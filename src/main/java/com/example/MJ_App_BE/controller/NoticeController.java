@@ -35,4 +35,11 @@ public class NoticeController {
         return listResult;
     }
 
+    //전체 공지 중 검색
+    @GetMapping(value = "/search")
+    public CommonResult getNoticesbyKeyword(@RequestParam("keyword") String keyword) {
+        List<NoticeResponseDto> notices = noticeService.getNoticesbyKeyword(keyword);
+        ListResult listResult = responseService.getListResult(notices);
+        return listResult;
+    }
 }

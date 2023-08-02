@@ -7,5 +7,6 @@ import java.util.List;
 public interface NoticeService {
 
     List<NoticeResponseDto> getNotices(String category);
+    List<NoticeResponseDto> getNoticesbyKeyword(String keyword);
 
 }

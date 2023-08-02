@@ -28,4 +28,10 @@ public class NoticeDaoImpl implements NoticeDao {
         List<Notice> notices = noticeRepository.findByCategory(category);
         return notices;
     }
+
+    @Override
+    public List<Notice> getNoticesbyKeyword(String keyword) {
+        List<Notice> notices = noticeRepository.findAllByKeyword(keyword);
+        return notices;
+    }
 }

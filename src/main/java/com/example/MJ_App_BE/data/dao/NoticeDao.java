@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface NoticeDao {
     List<Notice> getNotices(String category);
+    List<Notice> getNoticesbyKeyword(String keywordy);
 }
