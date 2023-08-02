@@ -15,4 +15,7 @@ public interface NoticeRepository extends JpaRepository<Notice, String> {
 //    Notice findByCategory(String category);
     @Query("SELECT n FROM Notice n WHERE n.title LIKE %:keyword%")
     List<Notice> findAllByKeyword(@Param("keyword") String keyword);
+
+    @Query("SELECT n FROM Notice n WHERE n.category = :category AND n.title LIKE %:keyword%")
+    List<Notice> findByCategoryAndKeyword(@Param("category") String category, @Param("keyword") String keyword);
 }

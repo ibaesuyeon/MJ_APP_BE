@@ -42,4 +42,12 @@ public class NoticeController {
         ListResult listResult = responseService.getListResult(notices);
         return listResult;
     }
+
+    //카테고리 별 검색
+    @GetMapping(value = "/{category}/search")
+    public CommonResult getNoticesbyKeyword(@PathVariable String category, @RequestParam("keyword") String keyword) {
+        List<NoticeResponseDto> notices = noticeService.getCategoricalNoticesbyKeyword(category, keyword);
+        ListResult listResult = responseService.getListResult(notices);
+        return listResult;
+    }
 }

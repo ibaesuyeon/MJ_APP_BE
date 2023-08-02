@@ -58,5 +58,27 @@ public class NoticeServiceImpl implements NoticeService {
 
             noticeResponseDtos.add(noticeResponseDto);
         }
-        return noticeResponseDtos;    }
+        return noticeResponseDtos;
+    }
+
+    @Override
+    public List<NoticeResponseDto> getCategoricalNoticesbyKeyword(String category, String keyword) {
+        List<Notice> notices = noticeDao.getCategoricalNoticesbyKeyword(category, keyword);
+        List<NoticeResponseDto> noticeResponseDtos = new ArrayList<NoticeResponseDto>();
+
+        for(int i=0;i<notices.size();i++) {
+            NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+
+            noticeResponseDto.setNoticeId(notices.get(i).getNoticeId());
+            noticeResponseDto.setNum(notices.get(i).getNum());
+            noticeResponseDto.setCategory(notices.get(i).getCategory());
+            noticeResponseDto.setTitle(notices.get(i).getTitle());
+            noticeResponseDto.setPubDate(notices.get(i).getPubDate());
+            noticeResponseDto.setLink(notices.get(i).getLink());
+//            noticeResponseDto.setUniv(notices.get(i).getUniv());
+
+            noticeResponseDtos.add(noticeResponseDto);
+        }
+        return noticeResponseDtos;
+    }
 }
