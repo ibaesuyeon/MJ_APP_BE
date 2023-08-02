@@ -20,8 +20,8 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<NoticeResponseDto> getNotices(String category) {
-        List<Notice> notices = noticeDao.getNotices(category);
+    public List<NoticeResponseDto> getCategoricalNotices(String category) {
+        List<Notice> notices = noticeDao.getCategoricalNotices(category);
         List<NoticeResponseDto> noticeResponseDtos = new ArrayList<NoticeResponseDto>();
 
         for(int i=0;i<notices.size();i++) {

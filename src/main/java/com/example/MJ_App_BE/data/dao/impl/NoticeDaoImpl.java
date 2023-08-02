@@ -24,7 +24,7 @@ public class NoticeDaoImpl implements NoticeDao {
     }
 
     @Override
-    public List<Notice> getNotices(String category) {
+    public List<Notice> getCategoricalNotices(String category) {
         List<Notice> notices = noticeRepository.findByCategory(category);
         return notices;
     }

@@ -30,7 +30,7 @@ public class NoticeController {
     //카테고리 별 공지 받아오기
     @GetMapping(value = "/{category}")
     public CommonResult getNotices(@PathVariable String category) {
-        List<NoticeResponseDto> notices = noticeService.getNotices(category);
+        List<NoticeResponseDto> notices = noticeService.getCategoricalNotices(category);
         ListResult listResult = responseService.getListResult(notices);
         return listResult;
     }
