@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 
-@RequestMapping("/user")
+@RequestMapping("/user/tag")
 @CrossOrigin(origins = "*")
 
 public class UserTagController {
@@ -29,28 +29,28 @@ public class UserTagController {
     }
 
     // 사용자가 선택한 태그 저장
-    @PostMapping("/tag/register")
+    @PostMapping("/register")
     public CommonResult saveTags(@RequestBody UserTagDto userTagDto) {
         userTagService.saveUserTags(userTagDto);
         return responseService.getSuccessfulResult();
     }
 
     // 태그 수정
-    @PutMapping("/tag/modify")
+    @PutMapping("/modify")
     public CommonResult updateTags(@RequestBody UserTagDto userTagDto) {
         userTagService.updateUserTags(userTagDto);
         return responseService.getSuccessfulResult();
     }
 
     // 사용자가 저장한 태그 일괄 삭제
-    @DeleteMapping("/tag/deletion/{userId}")
+    @DeleteMapping("/deletion/{userId}")
     public CommonResult deleteTags(@PathVariable Long userId) {
         userTagService.deleteUserTags(userId);
         return responseService.getSuccessfulResult();
     }
 
     // 태그 불러오기
-    @GetMapping("/tag/{userId}")
+    @GetMapping("/{userId}")
     public ListResult<TagDto> getTags(@PathVariable Long userId) {
         List<TagDto> tags = userTagService.getUserTags(userId).getTags();
         return responseService.getListResult(tags);
