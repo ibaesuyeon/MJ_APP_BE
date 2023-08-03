@@ -51,7 +51,7 @@ public class UserTagServiceImpl implements UserTagService {
         List<TagDto> tagDto = userTagDao.getUserTags(userId);
 
         TagResponseDto tagResponseDto = new TagResponseDto();
-        tagResponseDto.setTags(tagDto);
+        tagResponseDto.setTagDtoList(tagDto);
 
         return tagResponseDto;
     }

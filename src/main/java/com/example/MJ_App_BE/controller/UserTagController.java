@@ -52,7 +52,7 @@ public class UserTagController {
     // 태그 불러오기
     @GetMapping("/{userId}")
     public ListResult<TagDto> getTags(@PathVariable Long userId) {
-        List<TagDto> tags = userTagService.getUserTags(userId).getTags();
+        List<TagDto> tags = userTagService.getUserTags(userId).getTagDtoList();
         return responseService.getListResult(tags);
     }
 }

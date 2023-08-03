@@ -7,5 +7,5 @@ import java.util.List;
 
 @Getter @Setter
 public class TagResponseDto {
-    private List<TagDto> tags;
+    private List<TagDto> tagDtoList;
 }
