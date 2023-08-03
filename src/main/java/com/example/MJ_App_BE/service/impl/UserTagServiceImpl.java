@@ -16,12 +16,10 @@ import java.util.List;
 @Service
 public class UserTagServiceImpl implements UserTagService {
 
-    private final UserDao userDao;
     private final UserTagDao userTagDao;
 
     @Autowired
-    public UserTagServiceImpl(UserDao userDao, UserTagDao userTagDao) {
-        this.userDao = userDao;
+    public UserTagServiceImpl(UserTagDao userTagDao) {
         this.userTagDao = userTagDao;
     }
 
