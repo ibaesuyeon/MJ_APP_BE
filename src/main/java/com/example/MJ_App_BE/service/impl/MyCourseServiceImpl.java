@@ -3,6 +3,7 @@ package com.example.MJ_App_BE.service.impl;
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
 import com.example.MJ_App_BE.data.entity.Grade;
 import com.example.MJ_App_BE.data.entity.MyCourse;
+import com.example.MJ_App_BE.data.entity.Semester;
 import com.example.MJ_App_BE.data.entity.User;
 import com.example.MJ_App_BE.data.repository.MyCourseRepository;
 import com.example.MJ_App_BE.data.repository.UserRepository;
@@ -62,6 +63,33 @@ public class MyCourseServiceImpl implements MyCourseService {
         return Math.round(averageGrade * 100.0) / 100.0;
     }
 
+    @Override
+    public double calculateAverageGradeYearAndSemester(Long userId, int year, Semester semester) {
+        User user = userRepository.findByUserId(userId);
+        List<MyCourse> userCourses = myCourseRepository.findByUserAndYearAndSemester(user, year, semester);
+
+        int totalCredits = 0;
+        double totalGrades = 0.0;
+
+        for (MyCourse course : userCourses) {
+            Grade grade = course.getGrade();
+            if (isNumericGrade(grade)) {
+                int credits = course.getCourse().getCredit();
+                double gradePoint = convertGradeToGradePoint(grade);
+
+                totalCredits += credits;
+                totalGrades += credits * gradePoint;
+            }
+        }
+
+        if (totalCredits == 0) {
+            return 0.0;
+        }
+
+        double averageGrade = totalGrades / totalCredits;
+        return Math.round(averageGrade * 100.0) / 100.0;
+    }
+
     private double convertGradeToGradePoint(Grade grade) {
         switch (grade) {
             case A_PLUS:
@@ -89,7 +117,8 @@ public class MyCourseServiceImpl implements MyCourseService {
 
     private boolean isNumericGrade(Grade grade) {
         // 패논패 강의는 학점 계산에 포함하지 않음
-        return grade != Grade.P && grade != Grade.NP;
+        // grade가 null인 강의는 포함하지 않음
+        return grade != Grade.P && grade != Grade.NP && grade != null;
     }
 
 }

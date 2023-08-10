@@ -4,6 +4,7 @@ import com.example.MJ_App_BE.Result.CommonResult;
 import com.example.MJ_App_BE.Result.ResponseService;
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
 import com.example.MJ_App_BE.data.entity.Grade;
+import com.example.MJ_App_BE.data.entity.Semester;
 import com.example.MJ_App_BE.service.MyCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,14 @@ public class MyCourseController {
         return commonResult;
     }
 
-    // 고려할 점
-    // 1. null값인 경우 - 제외?
+    @GetMapping("/grade/{userId}/{year}/{semester}")
+    public CommonResult getAverageGradeForSpecificYearAndSemester(
+            @PathVariable Long userId,
+            @PathVariable int year,
+            @PathVariable Semester semester) {
+        double averageGrade = myCourseService.calculateAverageGradeYearAndSemester(userId, year, semester);
+        CommonResult commonResult = responseService.getSingleResult(averageGrade);
+        return commonResult;
+    }
 
 }
