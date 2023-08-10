@@ -13,7 +13,8 @@ public class MyCourse {
 
     private String details;
 
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
 
     @Column(nullable = false)
     private int year;
@@ -29,4 +30,8 @@ public class MyCourse {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "my_course_user_id")
     private User user;
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
+    }
 }
