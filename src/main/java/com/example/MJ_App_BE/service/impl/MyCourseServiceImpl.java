@@ -17,15 +17,9 @@ import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseResponseDto;
 import com.example.MJ_App_BE.data.entity.*;
 import com.example.MJ_App_BE.data.repository.*;
 import com.example.MJ_App_BE.exception.UserException;
-import com.example.MJ_App_BE.service.MyCourseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 import static com.example.MJ_App_BE.exception.ErrorCode.COURSE_NOT_FOUND;
-
-import java.util.List;
 
 @Service
 public class MyCourseServiceImpl implements MyCourseService {
@@ -38,20 +32,19 @@ public class MyCourseServiceImpl implements MyCourseService {
     private final MajorRepository majorRepository;
     private final UnivRepository univRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
-
- nnnn
 
     @Autowired
     public MyCourseServiceImpl(MyCourseDao myCourseDao, CollegeRepository collegeRepository, CampusRepository campusRepository,
-                               MajorRepository majorRepository, UnivRepository univRepository, CourseRepository courseRepository, UserRepository userRepository){
+                               MajorRepository majorRepository, UnivRepository univRepository, CourseRepository courseRepository, UserRepository userRepository,
+                               MyCourseRepository myCourseRepository){
         this.myCourseDao = myCourseDao;
         this.collegeRepository = collegeRepository;
         this.campusRepository = campusRepository;
         this.majorRepository = majorRepository;
         this.univRepository = univRepository;
-        this.courseRepository =courseRepository;
+        this.courseRepository = courseRepository;
         this.userRepository = userRepository;
+        this.myCourseRepository = myCourseRepository;
     }
 
     // 학점 입력

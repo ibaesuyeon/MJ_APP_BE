@@ -1,5 +1,6 @@
 package com.example.MJ_App_BE.data.dto.mycoursedto;
 
+import com.example.MJ_App_BE.data.entity.Grade;
 import com.example.MJ_App_BE.data.entity.Semester;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 public class MyCourseDto {
     private int year;
     private Semester semester;
-    private String grade;
+    private Grade grade;
     private String details;
     private Long myCourseCourseId;
     private Long myCourseUserId;

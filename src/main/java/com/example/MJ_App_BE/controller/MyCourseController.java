@@ -3,6 +3,7 @@ package com.example.MJ_App_BE.controller;
 import com.example.MJ_App_BE.Result.CommonResult;
 import com.example.MJ_App_BE.Result.ResponseService;
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
+import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseDto;
 import com.example.MJ_App_BE.data.entity.Semester;
 import com.example.MJ_App_BE.service.MyCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class MyCourseController {
 //        CommonResult commonResult = responseService.getListResult(myCourseList);
 //        return commonResult;
 //    }
+
     //시간표 삭제
     @DeleteMapping(value = "/myCourse/deletion/{id}")
     public CommonResult deleteUser(@PathVariable Long id) throws Exception{
