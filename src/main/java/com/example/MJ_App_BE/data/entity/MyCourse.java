@@ -2,8 +2,10 @@ package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 public class MyCourse {
 

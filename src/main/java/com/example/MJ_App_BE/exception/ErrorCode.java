@@ -11,6 +11,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @AllArgsConstructor
 public enum ErrorCode {
     USER_NOT_FOUND(NOT_FOUND, "해당 기기정보를 찾을 수 없습니다."),
+    COURSE_NOT_FOUND(NOT_FOUND, "해당 강좌정보를 찾을 수 없습니다."),
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다.")
     ;
 
