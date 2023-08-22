@@ -7,8 +7,7 @@ import java.util.List;
 public interface NoticeService {
 
     List<NoticeResponseDto> getCategoricalNotices(String category);
-    List<NoticeResponseDto> getNoticesbyKeyword(String keyword);
     List<NoticeResponseDto> getCategoricalNoticesbyKeyword(String category, String keyword);
 
-
+    NoticeResponseDto getRecent();
 }
