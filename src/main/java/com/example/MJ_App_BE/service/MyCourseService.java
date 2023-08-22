@@ -23,4 +23,5 @@ public interface MyCourseService {
 
     void deleteMyCourse(Long myCourseId) throws Exception;
 
+    List<MyCourseResponseDto> getSemesterCourse(Long userId, int year, Semester semester);
 }

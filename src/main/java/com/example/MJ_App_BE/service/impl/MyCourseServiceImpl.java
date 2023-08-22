@@ -1,6 +1,7 @@
 package com.example.MJ_App_BE.service.impl;
 
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
+import com.example.MJ_App_BE.data.dto.noticedto.NoticeResponseDto;
 import com.example.MJ_App_BE.data.entity.Grade;
 import com.example.MJ_App_BE.data.entity.MyCourse;
 import com.example.MJ_App_BE.data.entity.Semester;
@@ -17,6 +18,8 @@ import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseResponseDto;
 import com.example.MJ_App_BE.data.entity.*;
 import com.example.MJ_App_BE.data.repository.*;
 import com.example.MJ_App_BE.exception.UserException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.MJ_App_BE.exception.ErrorCode.COURSE_NOT_FOUND;
@@ -198,5 +201,30 @@ public class MyCourseServiceImpl implements MyCourseService {
     @Override
     public void deleteMyCourse(Long myCourseId) throws Exception {
         myCourseDao.deleteMyCourse(myCourseId);
+    }
+
+    @Override
+    public List<MyCourseResponseDto> getSemesterCourse(Long userId, int year, Semester semester) {
+        User user = userRepository.findByUserId(userId);
+        List<MyCourse> myCourses = myCourseRepository.findByUserAndYearAndSemester(user, year, semester);
+
+
+        List<MyCourseResponseDto> myCourseResponseDtos = new ArrayList<MyCourseResponseDto>();
+
+        for(int i=0;i<myCourses.size();i++) {
+            MyCourseResponseDto myCourseResponseDto = new MyCourseResponseDto();
+
+            myCourseResponseDto.setMyCourseId(myCourses.get(i).getMyCourseId());
+            myCourseResponseDto.setYear(myCourses.get(i).getYear());
+            myCourseResponseDto.setSemester(myCourses.get(i).getSemester());
+            myCourseResponseDto.setGrade(myCourses.get(i).getGrade());
+            myCourseResponseDto.setDetails(myCourses.get(i).getDetails());
+            myCourseResponseDto.setMyCourseCourseId(myCourses.get(i).getCourse().getCourseId());
+            myCourseResponseDto.setMyCourseUserId(myCourses.get(i).getUser().getUserId());
+
+            myCourseResponseDtos.add(myCourseResponseDto);
+        }
+
+        return myCourseResponseDtos;
     }
 }
