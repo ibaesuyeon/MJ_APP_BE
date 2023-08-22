@@ -34,20 +34,21 @@ public class NoticeController {
         ListResult listResult = responseService.getListResult(notices);
         return listResult;
     }
-
-    //전체 공지 중 검색
-    @GetMapping(value = "/search")
-    public CommonResult getNoticesbyKeyword(@RequestParam("keyword") String keyword) {
-        List<NoticeResponseDto> notices = noticeService.getNoticesbyKeyword(keyword);
-        ListResult listResult = responseService.getListResult(notices);
-        return listResult;
-    }
-
-    //카테고리 별 검색
-    @GetMapping(value = "/{category}/search")
-    public CommonResult getNoticesbyKeyword(@PathVariable String category, @RequestParam("keyword") String keyword) {
+    //카테고리 별 공지 검색
+    @GetMapping(value = "/{category}/search/{keyword}")
+    public CommonResult getCategoricalNoticesbyKeyword(@PathVariable String category, @PathVariable String keyword) {
         List<NoticeResponseDto> notices = noticeService.getCategoricalNoticesbyKeyword(category, keyword);
         ListResult listResult = responseService.getListResult(notices);
         return listResult;
     }
+
+    //일반공지 중 최신
+    @GetMapping(value = "/recent")
+    public CommonResult getRecent() {
+        NoticeResponseDto notice = noticeService.getRecent();
+        CommonResult commonResult = responseService.getSingleResult(notice);
+        return commonResult;
+    }
+
+
 }
