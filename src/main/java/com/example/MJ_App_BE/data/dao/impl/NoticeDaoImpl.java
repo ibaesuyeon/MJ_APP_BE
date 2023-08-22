@@ -1,17 +1,12 @@
 package com.example.MJ_App_BE.data.dao.impl;
 
 import com.example.MJ_App_BE.data.dao.NoticeDao;
-import com.example.MJ_App_BE.data.dao.UserDao;
-import com.example.MJ_App_BE.data.entity.*;
-import com.example.MJ_App_BE.data.repository.*;
-import com.example.MJ_App_BE.exception.UserException;
+import com.example.MJ_App_BE.data.entity.Notice;
+import com.example.MJ_App_BE.data.repository.NoticeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
-
-import static com.example.MJ_App_BE.exception.ErrorCode.USER_NOT_FOUND;
 
 @Component
 public class NoticeDaoImpl implements NoticeDao {
@@ -24,19 +19,19 @@ public class NoticeDaoImpl implements NoticeDao {
     }
 
     @Override
-    public List<Notice> getCategoricalNotices(String category) {
-        List<Notice> notices = noticeRepository.findByCategory(category);
+    public List<Notice> getAllNotices() {
+        List<Notice> notices = noticeRepository.findAll();
         return notices;
     }
-
     @Override
     public List<Notice> getNoticesbyKeyword(String keyword) {
-        List<Notice> notices = noticeRepository.findAllByKeyword(keyword);
+        List<Notice> notices = noticeRepository.findByKeyword(keyword);
         return notices;
     }
 
     @Override
-    public List<Notice> getCategoricalNoticesbyKeyword(String category, String keyword) {
-        List<Notice> notices = noticeRepository.findByCategoryAndKeyword(category, keyword);
-        return notices;    }
+    public Notice getRecent() {
+        Notice notice = noticeRepository.findTopByOrderByPubDateDesc();
+        return notice;
+    }
 }

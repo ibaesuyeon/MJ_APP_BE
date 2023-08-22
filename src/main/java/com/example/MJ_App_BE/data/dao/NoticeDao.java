@@ -5,7 +5,7 @@ import com.example.MJ_App_BE.data.entity.Notice;
 import java.util.List;
 
 public interface NoticeDao {
-    List<Notice> getCategoricalNotices(String category);
+    List<Notice> getAllNotices();
     List<Notice> getNoticesbyKeyword(String keyword);
-    List<Notice> getCategoricalNoticesbyKeyword(String category, String keyword);
+    Notice getRecent();
 }
