@@ -8,6 +8,7 @@ import com.example.MJ_App_BE.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.MJ_App_BE.exception.ErrorCode.COURSE_NOT_FOUND;
@@ -55,4 +56,5 @@ public class MyCourseDaoImpl implements MyCourseDao {
         MyCourse myCourse = selectedMyCourse.get();
         myCourseRepository.delete(myCourse);
     }
+
 }
