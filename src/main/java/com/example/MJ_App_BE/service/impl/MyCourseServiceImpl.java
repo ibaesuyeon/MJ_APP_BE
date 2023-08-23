@@ -1,7 +1,7 @@
 package com.example.MJ_App_BE.service.impl;
 
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
-import com.example.MJ_App_BE.data.dto.noticedto.NoticeResponseDto;
+import com.example.MJ_App_BE.data.dto.mycreditsdto.MyCreditsResponseDto;
 import com.example.MJ_App_BE.data.entity.Grade;
 import com.example.MJ_App_BE.data.entity.MyCourse;
 import com.example.MJ_App_BE.data.entity.Semester;
@@ -22,6 +22,8 @@ import com.example.MJ_App_BE.exception.UserException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.MJ_App_BE.data.entity.Ctype.*;
+import static com.example.MJ_App_BE.data.entity.Grade.P;
 import static com.example.MJ_App_BE.exception.ErrorCode.COURSE_NOT_FOUND;
 
 @Service
@@ -34,11 +36,13 @@ public class MyCourseServiceImpl implements MyCourseService {
     private final CollegeRepository collegeRepository;
     private final MajorRepository majorRepository;
     private final UnivRepository univRepository;
+    private final MyCreditsRepository myCreditsRepository;
+    private final CreditsRepository creditsRepository;
 
     @Autowired
     public MyCourseServiceImpl(MyCourseDao myCourseDao, CollegeRepository collegeRepository, CampusRepository campusRepository,
                                MajorRepository majorRepository, UnivRepository univRepository, UserRepository userRepository,
-                               MyCourseRepository myCourseRepository){
+                               MyCourseRepository myCourseRepository, MyCreditsRepository myCreditsRepository, CreditsRepository creditsRepository){
         this.myCourseDao = myCourseDao;
         this.collegeRepository = collegeRepository;
         this.campusRepository = campusRepository;
@@ -46,6 +50,8 @@ public class MyCourseServiceImpl implements MyCourseService {
         this.univRepository = univRepository;
         this.userRepository = userRepository;
         this.myCourseRepository = myCourseRepository;
+        this.myCreditsRepository = myCreditsRepository;
+        this.creditsRepository = creditsRepository;
     }
 
     // 학점 입력
@@ -138,7 +144,7 @@ public class MyCourseServiceImpl implements MyCourseService {
     private boolean isNumericGrade(Grade grade) {
         // 패논패 강의는 학점 계산에 포함하지 않음
         // grade가 null인 강의는 포함하지 않음
-        return grade != Grade.P && grade != Grade.NP && grade != null;
+        return grade != P && grade != Grade.NP && grade != null;
     }
 
 
@@ -152,6 +158,7 @@ public class MyCourseServiceImpl implements MyCourseService {
         myCourse.setGrade(myCourseDto.getGrade());
         myCourse.setCname(myCourseDto.getCname());
         myCourse.setCredit(myCourseDto.getCredit());
+        myCourse.setCtype(myCourseDto.getCtype());
 
         User user = userRepository.findById(myCourseDto.getMyCourseUserId())
                 .orElseThrow(() -> new UserException(COURSE_NOT_FOUND));
@@ -167,6 +174,7 @@ public class MyCourseServiceImpl implements MyCourseService {
         myCourseResponseDto.setGrade(savedCourse.getGrade());
         myCourseResponseDto.setCname(savedCourse.getCname());
         myCourseResponseDto.setCredit(savedCourse.getCredit());
+        myCourseResponseDto.setCtype(savedCourse.getCtype());
         myCourseResponseDto.setMyCourseUserId(savedCourse.getUser().getUserId());
 
         return myCourseResponseDto;
@@ -209,11 +217,129 @@ public class MyCourseServiceImpl implements MyCourseService {
             myCourseResponseDto.setGrade(myCourses.get(i).getGrade());
             myCourseResponseDto.setCname(myCourses.get(i).getCname());
             myCourseResponseDto.setCredit(myCourses.get(i).getCredit());
+            myCourseResponseDto.setCtype(myCourses.get(i).getCtype());
             myCourseResponseDto.setMyCourseUserId(myCourses.get(i).getUser().getUserId());
 
             myCourseResponseDtos.add(myCourseResponseDto);
         }
 
         return myCourseResponseDtos;
+    }
+
+    @Override
+    @Transactional
+    public MyCreditsResponseDto getAllCreditsByUser(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Credits credits = creditsRepository.findByMajorMajorId(user.getMajor().getMajorId());
+        List<MyCourse> myCourses = myCourseRepository.findByUser(user);
+        MyCredits myCredits = myCreditsRepository.findByUser(user).orElse(new MyCredits());
+
+        // 0으로 초기화
+        resetCredits(myCredits);
+
+        MyCredits calculateCredits = calculateCredits(credits, myCourses, myCredits);
+        myCredits.setUser(user);
+        myCredits.updateMyCredits(calculateCredits);
+        myCreditsRepository.save(myCredits);
+
+        MyCreditsResponseDto responseDto = new MyCreditsResponseDto();
+        responseDto.setMyCreditsId(myCredits.getMyCreditsId());
+        responseDto.setMyCommonElectiveCredits(myCredits.getMyCommonElectiveCredits());
+        responseDto.setMyCoreElectiveCredits(myCredits.getMyCoreElectiveCredits());
+        responseDto.setMyCollegeElectiveCredits(myCredits.getMyCollegeElectiveCredits());
+        responseDto.setMyGeneralElectiveCredits(myCredits.getMyGeneralElectiveCredits());
+        responseDto.setMyMajorCredits(myCredits.getMyMajorCredits());
+        responseDto.setMyFreeCredits(myCredits.getMyFreeCredits());
+        responseDto.setMyTotalCredits(myCredits.getMyTotalCredits());
+        responseDto.setMyChapel(myCredits.getMyChapel());
+        responseDto.setMyCreditsUserId(myCredits.getUser().getUserId());
+        return responseDto;
+    }
+
+    private void resetCredits(MyCredits myCredits) {
+        myCredits.setMyCommonElectiveCredits(0);
+        myCredits.setMyCoreElectiveCredits(0);
+        myCredits.setMyCollegeElectiveCredits(0);
+        myCredits.setMyGeneralElectiveCredits(0);
+        myCredits.setMyMajorCredits(0);
+        myCredits.setMyFreeCredits(0);
+        myCredits.setMyChapel(0);
+        myCredits.setMyTotalCredits(0);
+    }
+
+    private MyCredits calculateCredits(Credits credits, List<MyCourse> myCourses, MyCredits myCredits) {
+        boolean addedChapelCredits = false;
+
+        for (MyCourse course : myCourses) {
+            if (course.getCtype() == Ctype.COMMON) {
+                if (myCredits.getMyCommonElectiveCredits() == credits.getCommonElectiveCredits()) {
+                    myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + course.getCredit());
+                } else {
+                    myCredits.setMyCommonElectiveCredits(myCredits.getMyCommonElectiveCredits() + course.getCredit());
+                    if (myCredits.getMyCommonElectiveCredits() > credits.getCommonElectiveCredits()) {
+                        int remainCredits = myCredits.getMyCommonElectiveCredits() - credits.getCommonElectiveCredits();
+                        myCredits.setMyCommonElectiveCredits(credits.getCommonElectiveCredits());
+                        myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + remainCredits);
+                    }
+                }
+            } else if (course.getCtype() == CORE) {
+                if (myCredits.getMyCoreElectiveCredits() == credits.getCoreElectiveCredits()) {
+                    myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + course.getCredit());
+                } else {
+                    myCredits.setMyCoreElectiveCredits(myCredits.getMyCoreElectiveCredits() + course.getCredit());
+                    if (myCredits.getMyCoreElectiveCredits() > credits.getCoreElectiveCredits()) {
+                        int remainCredits = myCredits.getMyCoreElectiveCredits() - credits.getCoreElectiveCredits();
+                        myCredits.setMyCoreElectiveCredits(credits.getCoreElectiveCredits());
+                        myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + remainCredits);
+                    }
+                }
+            } else if (course.getCtype() == COLLEGE) {
+                if (myCredits.getMyCollegeElectiveCredits() == credits.getCollegeElectiveCredits()) {
+                    myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + course.getCredit());
+                } else {
+                    myCredits.setMyCollegeElectiveCredits(myCredits.getMyCollegeElectiveCredits() + course.getCredit());
+                    if (myCredits.getMyCollegeElectiveCredits() > credits.getCollegeElectiveCredits()) {
+                        int remainCredits = myCredits.getMyCollegeElectiveCredits() - credits.getCollegeElectiveCredits();
+                        myCredits.setMyFreeCredits(credits.getCollegeElectiveCredits());
+                        myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + remainCredits);
+                    }
+                }
+            } else if (course.getCtype() == GENERAL) {
+                if (myCredits.getMyGeneralElectiveCredits() == credits.getGeneralElectiveCredits()) {
+                    myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + course.getCredit());
+                } else {
+                    myCredits.setMyGeneralElectiveCredits(myCredits.getMyGeneralElectiveCredits() + course.getCredit());
+                    if (myCredits.getMyGeneralElectiveCredits() > credits.getGeneralElectiveCredits()) {
+                        int remainCredits = myCredits.getMyGeneralElectiveCredits() - credits.getGeneralElectiveCredits();
+                        myCredits.setMyGeneralElectiveCredits(credits.getGeneralElectiveCredits());
+                        myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + remainCredits);
+                    }
+                }
+            } else if (course.getCtype() == MAJOR) {
+                if (myCredits.getMyMajorCredits() == credits.getMajorCredits()) {
+                    myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + course.getCredit());
+                } else {
+                    myCredits.setMyMajorCredits(myCredits.getMyMajorCredits() + course.getCredit());
+                    if (myCredits.getMyMajorCredits() > credits.getMajorCredits()) {
+                        int remainCredits = myCredits.getMyMajorCredits() - credits.getMajorCredits();
+                        myCredits.setMyMajorCredits(credits.getMajorCredits());
+                        myCredits.setMyFreeCredits(myCredits.getMyFreeCredits() + remainCredits);
+                    }
+                }
+            } else if (course.getCtype() == CHAPEL) {
+                // 채플은 횟수 카운트
+                // 4회면 공통교양에 2학점 추가
+                if (myCredits.getMyChapel() < 4) {
+                    myCredits.setMyChapel(myCredits.getMyChapel() + 1);
+                    if (myCredits.getMyChapel() == 4 && !addedChapelCredits) {
+                        myCredits.setMyCommonElectiveCredits(myCredits.getMyCommonElectiveCredits() + 2);
+                        addedChapelCredits = true;
+                    }
+                }
+            }
+        }
+        myCredits.setMyTotalCredits(myCredits.getMyCommonElectiveCredits() + myCredits.getMyCoreElectiveCredits() + myCredits.getMyCollegeElectiveCredits() +
+                myCredits.getMyGeneralElectiveCredits() + myCredits.getMyMajorCredits() + myCredits.getMyFreeCredits());
+        return myCredits;
     }
 }

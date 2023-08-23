@@ -1,9 +1,11 @@
 package com.example.MJ_App_BE.service;
 
 
+import com.example.MJ_App_BE.data.dto.creditsdto.CreditsResponseDto;
 import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseDto;
 import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseResponseDto;
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
+import com.example.MJ_App_BE.data.dto.mycreditsdto.MyCreditsResponseDto;
 import com.example.MJ_App_BE.data.entity.Grade;
 import com.example.MJ_App_BE.data.entity.Semester;
 
@@ -24,4 +26,6 @@ public interface MyCourseService {
     void deleteMyCourse(Long myCourseId) throws Exception;
 
     List<MyCourseResponseDto> getSemesterCourse(Long userId, int year, Semester semester);
+
+    MyCreditsResponseDto getAllCreditsByUser(Long userId);
 }
