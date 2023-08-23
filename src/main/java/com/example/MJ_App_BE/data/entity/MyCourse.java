@@ -13,7 +13,9 @@ public class MyCourse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long myCourseId;
 
-    private String details;
+    private String cname;
+
+    private int credit;
 
     @Enumerated(EnumType.STRING)
     private Grade grade;
@@ -24,10 +26,6 @@ public class MyCourse {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Semester semester;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "my_course_course_id")
-    private Course course;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "my_course_user_id")

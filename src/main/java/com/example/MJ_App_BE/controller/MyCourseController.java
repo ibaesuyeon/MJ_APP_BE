@@ -39,10 +39,13 @@ public class MyCourseController {
     }
 
     //시간표 수정
-    @PutMapping("/grade")
-    public CommonResult setGrade(@RequestBody GradeRequestDto gradeRequestDto) {
-        myCourseService.setGradeMyCourse(gradeRequestDto);
 
+    //시간표 확인
+
+    //시간표 삭제
+    @DeleteMapping(value = "/myCourse/deletion/{id}")
+    public CommonResult deleteUser(@PathVariable Long id) throws Exception{
+        myCourseService.deleteMyCourse(id);
         return responseService.getSuccessfulResult();
     }
 
@@ -57,7 +60,6 @@ public class MyCourseController {
         return listResult;
     }
 
-    //시간표 확인
     @GetMapping("/grade/{userId}/all")
     public CommonResult getAllAverageGrade(@PathVariable Long userId) {
         double averageGrade = myCourseService.calculateAllAverageGrade(userId);
@@ -77,18 +79,16 @@ public class MyCourseController {
 
 
     //강의별 성적 입력하기
+    @PutMapping("/grade")
+    public CommonResult setGrade(@RequestBody GradeRequestDto gradeRequestDto) {
+        myCourseService.setGradeMyCourse(gradeRequestDto);
+
+        return responseService.getSuccessfulResult();
+    }
 
     //강의 추가하기
 
     //사용자의 지금까지 들은 전체 학점 불러오기(공통교양 총 몇점, 핵심교양 총 몇학점 => 이런식으로)
-
-
-    //시간표 삭제
-    @DeleteMapping(value = "/myCourse/deletion/{id}")
-    public CommonResult deleteUser(@PathVariable Long id) throws Exception{
-        myCourseService.deleteMyCourse(id);
-        return responseService.getSuccessfulResult();
-    }
 
 
 }

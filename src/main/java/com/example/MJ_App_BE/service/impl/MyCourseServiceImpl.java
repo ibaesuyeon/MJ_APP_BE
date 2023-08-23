@@ -34,18 +34,16 @@ public class MyCourseServiceImpl implements MyCourseService {
     private final CollegeRepository collegeRepository;
     private final MajorRepository majorRepository;
     private final UnivRepository univRepository;
-    private final CourseRepository courseRepository;
 
     @Autowired
     public MyCourseServiceImpl(MyCourseDao myCourseDao, CollegeRepository collegeRepository, CampusRepository campusRepository,
-                               MajorRepository majorRepository, UnivRepository univRepository, CourseRepository courseRepository, UserRepository userRepository,
+                               MajorRepository majorRepository, UnivRepository univRepository, UserRepository userRepository,
                                MyCourseRepository myCourseRepository){
         this.myCourseDao = myCourseDao;
         this.collegeRepository = collegeRepository;
         this.campusRepository = campusRepository;
         this.majorRepository = majorRepository;
         this.univRepository = univRepository;
-        this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.myCourseRepository = myCourseRepository;
     }
@@ -61,8 +59,6 @@ public class MyCourseServiceImpl implements MyCourseService {
         myCourseRepository.save(myCourse);
     }
 
-    // n학년 n학기 평균학점
-
     // 전체 평균학점
     @Override
     public double calculateAllAverageGrade(Long userId) {
@@ -75,7 +71,7 @@ public class MyCourseServiceImpl implements MyCourseService {
         for (MyCourse course : userCourses) {
             Grade grade = course.getGrade();
             if (isNumericGrade(grade)) {
-                int credits = course.getCourse().getCredit(); // 강의의 credit(학점) 가져오기
+                int credits = course.getCredit(); // 강의의 credit(학점) 가져오기
                 double gradePoint = convertGradeToGradePoint(grade);
 
                 totalCredits += credits;
@@ -98,7 +94,7 @@ public class MyCourseServiceImpl implements MyCourseService {
         for (MyCourse course : userCourses) {
             Grade grade = course.getGrade();
             if (isNumericGrade(grade)) {
-                int credits = course.getCourse().getCredit();
+                int credits = course.getCredit();
                 double gradePoint = convertGradeToGradePoint(grade);
 
                 totalCredits += credits;
@@ -154,11 +150,8 @@ public class MyCourseServiceImpl implements MyCourseService {
         myCourse.setYear(myCourseDto.getYear());
         myCourse.setSemester(myCourseDto.getSemester());
         myCourse.setGrade(myCourseDto.getGrade());
-        myCourse.setDetails(myCourseDto.getDetails());
-
-        Course course = courseRepository.findById(myCourseDto.getMyCourseCourseId())
-                .orElseThrow(() -> new UserException(COURSE_NOT_FOUND));
-        myCourse.setCourse(course);
+        myCourse.setCname(myCourseDto.getCname());
+        myCourse.setCredit(myCourseDto.getCredit());
 
         User user = userRepository.findById(myCourseDto.getMyCourseUserId())
                 .orElseThrow(() -> new UserException(COURSE_NOT_FOUND));
@@ -172,11 +165,9 @@ public class MyCourseServiceImpl implements MyCourseService {
         myCourseResponseDto.setYear(savedCourse.getYear());
         myCourseResponseDto.setSemester(savedCourse.getSemester());
         myCourseResponseDto.setGrade(savedCourse.getGrade());
-        myCourseResponseDto.setDetails(savedCourse.getDetails());
-        myCourseResponseDto.setMyCourseCourseId(savedCourse.getCourse().getCourseId());
+        myCourseResponseDto.setCname(savedCourse.getCname());
+        myCourseResponseDto.setCredit(savedCourse.getCredit());
         myCourseResponseDto.setMyCourseUserId(savedCourse.getUser().getUserId());
-
-
 
         return myCourseResponseDto;
     }
@@ -191,8 +182,6 @@ public class MyCourseServiceImpl implements MyCourseService {
 //        myCourseResponseDto.setYear(myCourse.getYear());
 //        myCourseResponseDto.setSemester(myCourse.getSemester());
 //        myCourseResponseDto.setGrade(myCourse.getGrade());
-//        myCourseResponseDto.setDetails(myCourse.getDetails());
-//        myCourseResponseDto.setMyCourseCourseId(myCourse.getCourse().getCourseId());
 //        myCourseResponseDto.setMyCourseUserId(myCourse.getUser().getUserId());
 //
 //        return myCourseResponseDto;
@@ -218,8 +207,8 @@ public class MyCourseServiceImpl implements MyCourseService {
             myCourseResponseDto.setYear(myCourses.get(i).getYear());
             myCourseResponseDto.setSemester(myCourses.get(i).getSemester());
             myCourseResponseDto.setGrade(myCourses.get(i).getGrade());
-            myCourseResponseDto.setDetails(myCourses.get(i).getDetails());
-            myCourseResponseDto.setMyCourseCourseId(myCourses.get(i).getCourse().getCourseId());
+            myCourseResponseDto.setCname(myCourses.get(i).getCname());
+            myCourseResponseDto.setCredit(myCourses.get(i).getCredit());
             myCourseResponseDto.setMyCourseUserId(myCourses.get(i).getUser().getUserId());
 
             myCourseResponseDtos.add(myCourseResponseDto);

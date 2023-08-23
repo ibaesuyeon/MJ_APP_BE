@@ -22,9 +22,6 @@ public class Major {
     private College college;
 
     @OneToMany(mappedBy = "major")
-    private List<Course> courseList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "major")
     private List<Credits> creditsList = new ArrayList<>();
 
     @OneToMany(mappedBy = "major")

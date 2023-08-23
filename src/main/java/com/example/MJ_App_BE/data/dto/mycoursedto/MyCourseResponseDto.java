@@ -12,8 +12,8 @@ public class MyCourseResponseDto {
     private int year;
     private Semester semester;
     private Grade grade;
-    private String details;
-    private Long myCourseCourseId;
+    private String cname;
+    private int credit;
     private Long myCourseUserId;
 
     public MyCourseResponseDto(){}
