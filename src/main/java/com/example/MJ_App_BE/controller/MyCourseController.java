@@ -6,6 +6,7 @@ import com.example.MJ_App_BE.Result.ResponseService;
 import com.example.MJ_App_BE.data.dto.mycoursedto.GradeRequestDto;
 import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseDto;
 import com.example.MJ_App_BE.data.dto.mycoursedto.MyCourseResponseDto;
+import com.example.MJ_App_BE.data.dto.mycreditsdto.MyCreditsResponseDto;
 import com.example.MJ_App_BE.data.dto.noticedto.NoticeResponseDto;
 import com.example.MJ_App_BE.data.entity.Semester;
 import com.example.MJ_App_BE.service.MyCourseService;
@@ -86,9 +87,12 @@ public class MyCourseController {
         return responseService.getSuccessfulResult();
     }
 
-    //강의 추가하기
-
     //사용자의 지금까지 들은 전체 학점 불러오기(공통교양 총 몇점, 핵심교양 총 몇학점 => 이런식으로)
-
+    @GetMapping("/credits/{userId}")
+    public CommonResult getAllCredits(@PathVariable Long userId) {
+        MyCreditsResponseDto myCredits = myCourseService.getAllCreditsByUser(userId);
+        CommonResult commonResult = responseService.getSingleResult(myCredits);
+        return commonResult;
+    }
 
 }
