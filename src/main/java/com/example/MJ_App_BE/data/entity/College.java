@@ -28,8 +28,5 @@ public class College {
     private List<CNotice> cNoticeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "college")
-    private List<Course> courseList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "college")
     private List<User> userList = new ArrayList<>();
 }

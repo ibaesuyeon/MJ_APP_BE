@@ -47,8 +47,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MyCourse> myCourseList = new ArrayList<>();
 
-    // @ManyToMany
-    // private List<Tag> tagList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserTag> userTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Keyword> keywordList = new ArrayList<>();
+
 
     @Builder
     public User(String deviceId, int year, Univ univ, Campus campus, College college, Major major) {

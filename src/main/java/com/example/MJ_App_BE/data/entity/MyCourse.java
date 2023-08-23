@@ -2,8 +2,10 @@ package com.example.MJ_App_BE.data.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 public class MyCourse {
 
@@ -11,9 +13,12 @@ public class MyCourse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long myCourseId;
 
-    private String details;
+    private String cname;
 
-    private String grade;
+    private int credit;
+
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
 
     @Column(nullable = false)
     private int year;
@@ -23,10 +28,10 @@ public class MyCourse {
     private Semester semester;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "my_course_course_id")
-    private Course course;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "my_course_user_id")
     private User user;
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
+    }
 }

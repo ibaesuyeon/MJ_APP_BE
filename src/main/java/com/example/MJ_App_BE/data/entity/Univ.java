@@ -29,4 +29,7 @@ public class Univ {
     @OneToMany(mappedBy = "univ", cascade = CascadeType.ALL)
     private List<Campus> campusList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "univ", cascade = CascadeType.ALL)
+    private List<Work_Notice> work_noticeList = new ArrayList<>();
+
 }

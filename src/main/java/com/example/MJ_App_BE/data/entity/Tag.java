@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,7 +17,9 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String tname;
 
+    @OneToMany(mappedBy = "tag")
+    private List<UserTag> userTags = new ArrayList<>();
 }
