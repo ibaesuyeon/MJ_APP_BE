@@ -16,20 +16,30 @@ public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeDao noticeDao;
     private final Festival_NoticeDao festival_noticeDao;
-//    private final NoticeDao noticeDao; //학사
+    private final School_NoticeDao school_noticeDao;
     private final Edu_NoticeDao edu_noticeDao;
     private final Work_NoticeDao work_noticeDao;
     private final St_Work_NoticeDao st_work_noticeDao;
-    private final School_NoticeDao school_noticeDao;
+    private final Hum_NoticeDao hum_noticeDao;
+    private final Business_NoticeDao business_noticeDao;
+    private final Ict_NoticeDao ict_noticeDao;
+    private final Law_NoticeDao law_noticeDao;
 
     @Autowired
-    public NoticeServiceImpl(@Qualifier("noticeDaoImpl") NoticeDao noticeDao, Festival_NoticeDao festival_noticeDao, School_NoticeDao school_noticeDao, Edu_NoticeDao edu_noticeDao, Work_NoticeDao work_noticeDao, St_Work_NoticeDao st_work_noticeDao){
-        this.noticeDao = noticeDao;
-        this.festival_noticeDao = festival_noticeDao;
-        this.school_noticeDao = school_noticeDao;
-        this.edu_noticeDao = edu_noticeDao;
-        this.work_noticeDao = work_noticeDao;
-        this.st_work_noticeDao = st_work_noticeDao;
+    public NoticeServiceImpl(@Qualifier("noticeDaoImpl") NoticeDao noticeDao, Festival_NoticeDao festival_noticeDao, School_NoticeDao school_noticeDao,
+                             Edu_NoticeDao edu_noticeDao, Work_NoticeDao work_noticeDao, St_Work_NoticeDao st_work_noticeDao, Ict_NoticeDao ict_noticeDao,
+                             Hum_NoticeDao hum_noticeDao, Law_NoticeDao law_noticeDao, Business_NoticeDao business_noticeDao) {
+        this.noticeDao = noticeDao; //일반공지
+        this.festival_noticeDao = festival_noticeDao; //행사공지
+        this.school_noticeDao = school_noticeDao; //학사공지
+        this.edu_noticeDao = edu_noticeDao; //장학학자금공지
+        this.work_noticeDao = work_noticeDao; //진로취업창업공지
+        this.st_work_noticeDao = st_work_noticeDao; //학생활동공지
+
+        this.ict_noticeDao = ict_noticeDao; //ICT공지
+        this.hum_noticeDao = hum_noticeDao; //인문대공지
+        this.law_noticeDao = law_noticeDao; //법대공지
+        this.business_noticeDao = business_noticeDao; //경영대공지
     }
 
     @Override //카테고리 별 공지 받아오기
@@ -117,6 +127,62 @@ public class NoticeServiceImpl implements NoticeService {
                     noticeResponseDto.setPubDate(st_work_notices.get(i).getPubDate());
                     noticeResponseDto.setLink(st_work_notices.get(i).getLink());
 //                  noticeResponseDto.setUniv(st_work_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "인문대공지":
+                List<Hum_Notice> hum_notices = hum_noticeDao.getAllNotices();
+                for (int i = 0; i < hum_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(hum_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(hum_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(hum_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(hum_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(hum_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(hum_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(hum_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "경영대공지":
+                List<Business_Notice> business_notices = business_noticeDao.getAllNotices();
+                for (int i = 0; i < business_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(business_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(business_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(business_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(business_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(business_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(business_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(business_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "법대공지":
+                List<Law_Notice> law_notices = law_noticeDao.getAllNotices();
+                for (int i = 0; i < law_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(law_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(law_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(law_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(law_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(law_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(law_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(law_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "ICT공지":
+                List<Ict_Notice> ict_notices = ict_noticeDao.getAllNotices();
+                for (int i = 0; i < ict_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(ict_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(ict_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(ict_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(ict_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(ict_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(ict_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(ict_notices.get(i).getUniv());
                     noticeResponseDtos.add(noticeResponseDto);
                 }
                 break;
@@ -209,6 +275,62 @@ public class NoticeServiceImpl implements NoticeService {
                     noticeResponseDto.setPubDate(st_work_notices.get(i).getPubDate());
                     noticeResponseDto.setLink(st_work_notices.get(i).getLink());
 //                  noticeResponseDto.setUniv(st_work_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "인문대공지":
+                List<Hum_Notice> hum_notices = hum_noticeDao.getNoticesbyKeyword(keyword);
+                for (int i = 0; i < hum_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(hum_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(hum_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(hum_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(hum_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(hum_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(hum_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(hum_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "경영대공지":
+                List<Business_Notice> business_notices = business_noticeDao.getNoticesbyKeyword(keyword);
+                for (int i = 0; i < business_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(business_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(business_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(business_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(business_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(business_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(business_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(business_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "법대공지":
+                List<Law_Notice> law_notices = law_noticeDao.getNoticesbyKeyword(keyword);
+                for (int i = 0; i < law_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(law_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(law_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(law_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(law_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(law_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(law_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(law_notices.get(i).getUniv());
+                    noticeResponseDtos.add(noticeResponseDto);
+                }
+                break;
+            case "ICT공지":
+                List<Ict_Notice> ict_notices = ict_noticeDao.getNoticesbyKeyword(keyword);
+                for (int i = 0; i < ict_notices.size(); i++) {
+                    NoticeResponseDto noticeResponseDto = new NoticeResponseDto();
+                    noticeResponseDto.setNoticeId(ict_notices.get(i).getNoticeId());
+                    noticeResponseDto.setNum(ict_notices.get(i).getNum());
+                    noticeResponseDto.setCategory(ict_notices.get(i).getCategory());
+                    noticeResponseDto.setTitle(ict_notices.get(i).getTitle());
+                    noticeResponseDto.setPubDate(ict_notices.get(i).getPubDate());
+                    noticeResponseDto.setLink(ict_notices.get(i).getLink());
+//                  noticeResponseDto.setUniv(ict_notices.get(i).getUniv());
                     noticeResponseDtos.add(noticeResponseDto);
                 }
                 break;
